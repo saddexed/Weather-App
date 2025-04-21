@@ -1,0 +1,134 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-blue-500 to-indigo-800 text-white p-4 md:p-8">
+    <button id="dark-mode-toggle" class="absolute top-6 right-8 bg-white bg-opacity-20 hover:bg-opacity-40 text-white rounded-full w-12 h-12 flex items-center justify-center transition z-50" title="Toggle dark mode">
+        <i id="dark-mode-icon" class="fas fa-moon"></i>
+    </button>
+    <span id="theme-mode-label" class="absolute top-6 right-24 text-xs text-white bg-black bg-opacity-30 px-2 py-1 rounded"></span>
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl md:text-4xl font-bold text-center mb-8">Weather Forecast</h1>
+        
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Main Weather Card -->
+            <div class="weather-card flex-1 rounded-2xl p-6 border border-white border-opacity-20 fade-in">
+                <div class="flex items-center mb-6">
+                    <input type="text" id="location-input" placeholder=""
+                    class="search-input flex-1 bg-white bg-opacity-10 rounded-full py-3 px-5 text-white placeholder-white placeholder-opacity-70 focus:bg-opacity-20 transition">
+                    <button id="search-btn"
+                    class="ml-3 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full w-12 h-12 flex items-center justify-center transition">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button id="location-btn"
+                class="ml-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full w-12 h-12 flex items-center justify-center transition"
+                title="Use my location">
+                <i class="fas fa-location-arrow"></i>
+            </button>
+        </div>
+        
+        <div id="current-weather" class="text-center">
+            <div id="loading" class="flex justify-center items-center py-16 hidden">
+                <div class="loading-spinner h-12 w-12 border-4 border-white border-opacity-20 rounded-full">
+                </div>
+                <span class="ml-3">Fetching weather data...</span>
+            </div>
+            
+            <div id="weather-content" class="hidden">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 id="location" class="text-2xl font-semibold"></h2>
+                        <p id="date" class="text-white text-opacity-80"></p>
+                    </div>
+                    <div id="current-icon" class="weather-icon text-6xl"></div>
+                </div>
+                
+                <div class="flex items-center justify-center mb-8">
+                    <div class="temperature mr-4" id="temperature"></div>
+                    <div class="text-left">
+                        <p id="weather-description" class="weather-description text-xl mb-1"></p>
+                        <p id="feels-like" class="text-white text-opacity-80"></p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div class="bg-white bg-opacity-10 rounded-xl p-3">
+                        <p class="text-sm text-white text-opacity-80">Humidity</p>
+                        <p id="humidity" class="text-xl font-medium"></p>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-xl p-3">
+                        <p class="text-sm text-white text-opacity-80">Wind</p>
+                        <p id="wind" class="text-xl font-medium"></p>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-xl p-3">
+                        <p class="text-sm text-white text-opacity-80">Pressure</p>
+                        <p id="pressure" class="text-xl font-medium"></p>
+                    </div>
+                </div>
+                <!-- Add new row for extra units -->
+                <div class="grid grid-cols-3 gap-4 text-center mt-4">
+                    <div class="bg-white bg-opacity-10 rounded-xl p-3">
+                        <p class="text-sm text-white text-opacity-80">Min/Max</p>
+                        <p id="minmax" class="text-xl font-medium"></p>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-xl p-3">
+                        <p class="text-sm text-white text-opacity-80">Visibility</p>
+                        <p id="visibility" class="text-xl font-medium"></p>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-xl p-3">
+                        <p class="text-sm text-white text-opacity-80">Clouds</p>
+                        <p id="clouds" class="text-xl font-medium"></p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-4 text-center mt-4">
+                    <div class="bg-white bg-opacity-10 rounded-xl p-3">
+                        <p class="text-sm text-white text-opacity-80">Wind Gust</p>
+                        <p id="wind-gust" class="text-xl font-medium"></p>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-xl p-3">
+                        <p class="text-sm text-white text-opacity-80">Sea Level</p>
+                        <p id="sea-level" class="text-xl font-medium"></p>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-xl p-3">
+                        <p class="text-sm text-white text-opacity-80">Ground Level</p>
+                        <p id="grnd-level" class="text-xl font-medium"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="error-message" class="py-8 text-red-200 font-medium">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <span>Location not found. Please try again.</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Forecast Section -->
+    <div class="weather-card w-full md:w-64 rounded-2xl p-6 border border-white border-opacity-20 fade-in"
+    style="animation-delay: 0.2s">
+    <h3 class="text-xl font-semibold mb-6">5-Day Forecast</h3>
+    
+    <div id="forecast-container">
+        <div id="forecast-loading" class="flex justify-center items-center py-8">
+            <div class="loading-spinner h-8 w-8 border-4 border-white border-opacity-20 rounded-full"></div>
+        </div>
+        
+        <div id="forecast-content" class="hidden space-y-4">
+            <!-- Forecast items will be added here by JavaScript -->
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<script src="scripts.js"></script>
+
+</body>
+
+</html>
