@@ -1,5 +1,7 @@
 // API Key - Replace with your actual OpenWeatherMap API key
-const API_KEY = '59b7ef44b63ae2fe52bd9715c8a54f3d';
+// Bitch I know that mine is out for everyone to see but head to https://home.openweathermap.org/api_keys and get your own :smh:
+// Mine will rate limit anyways
+const za_key = '59b7ef44b63ae2fe52bd9715c8a54f3d';
 
 // DOM Elements
 const locationInput = document.getElementById('location-input');
@@ -96,7 +98,7 @@ async function fetchWeather(location) {
     try {
         showLoading("Fetching weather data...");
 
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${API_KEY}`);
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${za_key}`);
         const data = await response.json();
 
         if (data.cod === 200) {
@@ -116,7 +118,7 @@ async function fetchForecast(location) {
         forecastContent.classList.add('hidden');
         forecastLoading.classList.remove('hidden');
 
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${location}&units=metric&appid=${API_KEY}`);
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${location}&units=metric&appid=${za_key}`);
         const data = await response.json();
 
         if (data.cod === '200') {
